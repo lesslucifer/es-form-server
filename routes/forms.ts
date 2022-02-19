@@ -14,12 +14,13 @@ class FormRouter extends ExpressRouter {
     })
     @POST({path: "/"})
     async addForm(@Body() body: any) {
+        console.log(`New form received: ${JSON.stringify(body)}`)
         const time = moment()
         const doc = await CONN.Elastic.index({
             index: `${body.index}-${time.format('YYYY.MM.DD')}`,
             body: {
                 ..._.omit(body, 'index'),
-                '@timestamp': time.valueOf()
+                '@timestamp': time.format()
             }
         })
         return doc.body
