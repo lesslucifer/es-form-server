@@ -6,7 +6,6 @@ import CONN from './glob/conn';
 import { ENV } from './glob/env';
 import cors from './utils/cors';
 import { AppApiResponse, AppLogicError } from './utils/hera';
-import winston = require('winston/lib/winston/config');
 import terminate from './serv/terminate';
 import createSesssionObject from './serv/sess';
 import _ from 'lodash';
@@ -25,7 +24,7 @@ export class Program {
         server.use(createSesssionObject());
         server.all('*', cors());
 
-        APIInfo.Logging = (winston.npm.levels[ENV.LOG_LEVEL] || 0) > 2 // greater than info level
+        // APIInfo.Logging = (winston.npm.levels[ENV.LOG_LEVEL] || 0) > 2 // greater than info level
         await ExpressRouter.loadDir(server, `${__dirname}/routes`, {
             log: console.error.bind(console)
         })
