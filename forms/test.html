@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>My page</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <script src="https://unpkg.com/react@latest/umd/react.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@latest/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@mui/material@latest/umd/material-ui.development.js" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/babel-standalone@latest/babel.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.7/antd.min.js" integrity="sha512-GpnGs/xx3j6bm+aec7X562mmf4JkTCUm1hOLPCV1cm91kqZ09xUflsPJEC5khPJwnBFVQqTPiABv9R4o+c8B1Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js" integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Fonts to support Material Design -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+    <!-- Icons to support Material Design -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/4.18.7/antd.min.css" integrity="sha512-xfMskEjcf9HXmTuZjnIJ7A/B4lOUbNLpfc6aFhFOXm4X4uMLGkeei9b/3AV9XU31QwfOg+586UYU8MyRxvtdFA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+const {
+  colors,
+  CssBaseline,
+  ThemeProvider,
+  Typography,
+  Container,
+  createTheme,
+  Box,
+  SvgIcon,
+  Link,
+} = MaterialUI;
+
+// Create a theme instance.
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#556cd6',
+    },
+    secondary: {
+      main: '#19857b',
+    },
+    error: {
+      main: colors.red.A400,
+    },
+  },
+});
+
+function LightBulbIcon(props) {
+  return (
+    <SvgIcon {...props}>
+      <path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26c1.81-1.27 3-3.36 3-5.74 0-3.86-3.14-7-7-7zm2.85 11.1l-.85.6V16h-4v-2.3l-.85-.6C7.8 12.16 7 10.63 7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.63-.8 3.16-2.15 4.1z" />
+    </SvgIcon>
+  );
+}
+
+function ProTip() {
+  return (
+    <Typography sx={{ mt: 6, mb: 3 }} color="text.secondary">
+      <LightBulbIcon sx={{ mr: 1, verticalAlign: 'top' }} />
+      Pro tip: See more{' '}
+      <Link href="https://mui.com/getting-started/templates/">
+        templates
+      </Link>{' '}
+      on the MUI documentation.
+    </Typography>
+  );
+}
+
+function Copyright() {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center">
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Your Website
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+function Form() {
+  const { Form, Button, Checkbox, Input, Card, Select, DatePicker, InputNumber } = window['antd']
+  const { Option } = Select
+  return (
+    <Card title="Daily Report">
+      <Form
+        name="basic"
+        labelCol={{ span: 8 }}
+        wrapperCol={{ span: 16 }}
+        initialValues={{ remember: true }}
+        autoComplete="off"
+        initialValues={{
+          date: moment(),
+          branch: "",
+          ref: 0,
+          pol: 0,
+          fyp: 0
+        }}
+        onFinish={async (values) => {
+          try {
+            await axios.post('https://api.ze-connect.com/esform/forms', {
+              index: 'test',
+              ...values
+            })
+            swal("Thành công!", "Đã gửi thành công!", "success");
+          }
+          catch (err) {
+            console.error(err)
+            swal ("Oops" ,  "Đã có lỗi xảy ra, xin vui lòng thử lại!",  "error")
+          }
+        }}
+      >
+        <Form.Item
+          label="Email"
+          name="email"
+          rules={[{ required: true, type: 'email', message: 'Please a valid email!' }]}
+        >
+          <Input  />
+        </Form.Item>
+        
+        <Form.Item
+          label="Ngày báo cáo"
+          name="date"
+          rules={[{ required: true, message: 'Chọn ngày báo cáo!' }]}
+        >
+          <DatePicker />
+        </Form.Item>
+
+        <Form.Item
+          label="Chi nhánh"
+          name="branch"
+          rules={[{ required: true, message: 'Bạn phải chọn chi nhánh!' }]}
+        >
+          <Select defaultValue="">
+              <Option value="" disabled="" selected="">Vui lòng chọn </Option>
+              <Option value="VN0010185-VPBANK PHU MY HUNG-VPBANK PHU MY HUNG">PHÚ MỸ HƯNG</Option>     
+              <Option value="VN0010102-VPBANK HO CHI MINH-VPBANK HO CHI MINH">HỒ CHÍ MINH</Option>     
+              <Option value="VN0010351-VPBANK BEN THANH-VPBANK BEN THANH">BẾN THÀNH</Option>     
+              <Option value="VN0010194-VPBANK LE VAN SY-Đô Thành">LÊ VĂN SỸ</Option>     
+              <Option value="VN0010201-VPBANK HANG XANH-Đô Thành">HÀNG XANH</Option>     
+              <Option value="VN0010120-VPBANK DONG SAI GON-Đô Thành">ĐÔNG SÀI GÒN</Option>     
+              <Option value="VN0010218-VPBANK QUAN 03-Đô Thành">QUẬN 03</Option>     
+              <Option value="VN0010123-VPBANK THU DUC-Đông Hồ Chí Minh">THỦ ĐỨC</Option>     
+              <Option value="VN0010210-VPBANK LE VAN VIET-Đông Hồ Chí Minh">LÊ VĂN VIỆT</Option>     
+              <Option value="VN0010257-VPBANK THANH MY LOI-Đông Hồ Chí Minh">THẠNH MỸ LỢI</Option>     
+              <Option value="VN0010387-VPBANK PHAN VAN TRI-Đông Hồ Chí Minh">PHAN VĂN TRỊ</Option>     
+              <Option value="VN0010341-VPBANK QUAN 2-Đông Hồ Chí Minh">QUẬN 02</Option>     
+              <Option value="VN0010121-VPBANK BA CHIEU-Gia Định">BÀ CHIỂU</Option>     
+              <Option value="VN0010269-VPBANK GIA DINH-Gia Định">GIA ĐỊNH</Option>     
+              <Option value="VN0010148-VPBANK BINH THANH-Gia Định">BÌNH THẠNH</Option>     
+              <Option value="VN0010255-VPBANK NO TRANG LONG-Gia Định">NƠ TRANG LONG</Option>     
+              <Option value="VN0010343-VPBANK VAN THANH-Gia Định">VĂN THÁNH</Option>     
+              <Option value="VN0010125-VPBANK KHANH HOI-Nam Hồ Chí Minh">KHÁNH HỘI</Option>     
+              <Option value="VN0010352-VPBANK TRUNG SON-Nam Hồ Chí Minh">TRUNG SƠN</Option>     
+              <Option value="VN0010162-VPBANK Nam Sai Gon-Nam Hồ Chí Minh">NAM SÀI GÒN</Option>     
+              <Option value="VN0010371-VPBANK NHA BE-Nam Hồ Chí Minh">NHÀ BÈ</Option>     
+              <Option value="VN0010321-VPBANK PHU XUAN-Nam Hồ Chí Minh">PHÚ XUÂN</Option>     
+              <Option value="VN0010254-VPBANK TAN HUNG-Nam Hồ Chí Minh">TÂN HƯNG</Option>     
+              <Option value="VN0010377-VPBANK TT VAY THE CHAP VUNG 8-VPBANK TT VAY THE CHAP VUNG 8">TTTC VÙNG 08</Option>     
+              <Option value="PHÚ NHUẬN">PHÚ NHUẬN</Option>     
+          </Select>
+        </Form.Item>
+        
+        <Form.Item
+          label="REF"
+          name="ref"
+          rules={[{ required: true,  message: 'REF number is required!' }]}
+        >
+          <InputNumber min={0} max={1000} defaultValue={0} />
+        </Form.Item>
+        
+        <Form.Item
+          label="POL"
+          name="pol"
+          rules={[{ required: true,  message: 'POL number is required!' }]}
+        >
+          <InputNumber min={0} max={1000} defaultValue={0} />
+        </Form.Item>
+        
+        <Form.Item
+          label="FYP"
+          name="fyp"
+          rules={[{ required: true,  message: 'FYP number is required!' }]}
+        >
+          <InputNumber min={0} max={1000} defaultValue={0} />
+        </Form.Item>
+
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">
+            Submit
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
+  );
+}
+
+function App() {
+  return (
+    <Container maxWidth="sm">
+      <Box sx={{ my: 4 }}>
+        <Form />
+        <Copyright />
+      </Box>
+    </Container>
+  );
+}
+
+ReactDOM.render(
+    <ThemeProvider theme={theme}>
+      {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+      <CssBaseline />
+      <App />
+    </ThemeProvider>,
+  document.querySelector('#root'),
+);
+    </script>
+  </body>
+</html>
