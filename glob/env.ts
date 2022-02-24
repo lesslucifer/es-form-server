@@ -5,7 +5,7 @@ import hera from '../utils/hera';
 const ajv = newAjv2();
 
 export interface DB_CONFIG {
-    ELASTIC: string
+    SQL: string
 }
 
 export interface ENV_CONFIG extends DB_CONFIG {
@@ -18,7 +18,7 @@ const ajvEnvConfig = ajv({
     '+@NAME': 'string',
     '@HTTP_PORT': 'number',
     '@LOG_LEVEL': 'string',
-    '+@ELASTIC': 'string'
+    '+@SQL': 'string'
 })
 
 const ENV_DEFAULT: Partial<ENV_CONFIG> = {

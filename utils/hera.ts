@@ -277,10 +277,6 @@ export class Hera {
         return result
     }
 
-    isPromise(o: any) {
-        return _.isFunction(o?.then)
-    }
-
     toJSON(data: any) {
         if (data == null) return;
         try {

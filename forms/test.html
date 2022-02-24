@@ -94,17 +94,18 @@ function Form() {
         initialValues={{ remember: true }}
         autoComplete="off"
         initialValues={{
-          date: moment(),
-          branch: "",
-          ref: 0,
-          pol: 0,
-          fyp: 0
+          tspar1: moment(),
+          tpar1: "",
+          ipar1: 0,
+          ipar2: 0,
+          ipar3: 0
         }}
         onFinish={async (values) => {
           try {
-            await axios.post('https://api.ze-connect.com/esform/forms', {
-              index: 'test',
-              ...values
+            await axios.post('https://api.ze-connect.com/esform/lake/data', {
+              type: 'test_form',
+              ...values,
+              tspar1: values.tspar1.unix()
             })
             swal("Thành công!", "Đã gửi thành công!", "success");
           }
@@ -116,7 +117,7 @@ function Form() {
       >
         <Form.Item
           label="Email"
-          name="email"
+          name="code"
           rules={[{ required: true, type: 'email', message: 'Please a valid email!' }]}
         >
           <Input  />
@@ -124,7 +125,7 @@ function Form() {
         
         <Form.Item
           label="Ngày báo cáo"
-          name="date"
+          name="tspar1"
           rules={[{ required: true, message: 'Chọn ngày báo cáo!' }]}
         >
           <DatePicker />
@@ -132,7 +133,7 @@ function Form() {
 
         <Form.Item
           label="Chi nhánh"
-          name="branch"
+          name="tpar1"
           rules={[{ required: true, message: 'Bạn phải chọn chi nhánh!' }]}
         >
           <Select defaultValue="">
@@ -167,7 +168,7 @@ function Form() {
         
         <Form.Item
           label="REF"
-          name="ref"
+          name="ipar1"
           rules={[{ required: true,  message: 'REF number is required!' }]}
         >
           <InputNumber min={0} max={1000} defaultValue={0} />
@@ -175,7 +176,7 @@ function Form() {
         
         <Form.Item
           label="POL"
-          name="pol"
+          name="ipar2"
           rules={[{ required: true,  message: 'POL number is required!' }]}
         >
           <InputNumber min={0} max={1000} defaultValue={0} />
@@ -183,7 +184,7 @@ function Form() {
         
         <Form.Item
           label="FYP"
-          name="fyp"
+          name="ipar3"
           rules={[{ required: true,  message: 'FYP number is required!' }]}
         >
           <InputNumber min={0} max={1000} defaultValue={0} />

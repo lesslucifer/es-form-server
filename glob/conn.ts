@@ -1,12 +1,13 @@
 import { ENV_CONFIG } from './env';
-import * as elastic from '@elastic/elasticsearch'
+import { Sequelize } from 'sequelize-typescript'
+import hera from '../utils/hera';
 
 // ************ CONFIGS ************
 export class AppConnections {
-    private elastic: elastic.Client
+    private seq: Sequelize
 
-    get Elastic(): elastic.Client {
-        return this.elastic
+    get SEQ(): Sequelize {
+        return this.seq
     }
 
     constructor() {
@@ -14,8 +15,15 @@ export class AppConnections {
     }
 
     async configureConnections(config: ENV_CONFIG) {
-        this.elastic = new elastic.Client({
-            node: config.ELASTIC
+        const sqlURL = new URL(config.SQL)
+        this.seq = new Sequelize({
+            host: sqlURL.hostname,
+            port: hera.parseInt(sqlURL.port, 10, 3306),
+            database: sqlURL.pathname.substring(1),
+            dialect: <any> sqlURL.protocol.substring(0, sqlURL.protocol.length - 1),
+            username: sqlURL.username,
+            password: sqlURL.password,
+            models: [__dirname + '/../models'] // or [Player, Team],
         })
     }
 }

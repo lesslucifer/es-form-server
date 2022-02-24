@@ -9,6 +9,7 @@ import { AppApiResponse, AppLogicError } from './utils/hera';
 import terminate from './serv/terminate';
 import createSesssionObject from './serv/sess';
 import _ from 'lodash';
+import * as path from 'path'
 
 export class Program {
     static server: express.Express;
@@ -24,6 +25,8 @@ export class Program {
         server.use(createSesssionObject());
         server.all('*', cors());
 
+        server.use('/forms', express.static(path.resolve(process.cwd(), 'forms')))
+
         // APIInfo.Logging = (winston.npm.levels[ENV.LOG_LEVEL] || 0) > 2 // greater than info level
         await ExpressRouter.loadDir(server, `${__dirname}/routes`, {
             log: console.error.bind(console)
@@ -31,10 +34,10 @@ export class Program {
         // Express router
         ExpressRouter.ResponseHandler = this.expressRouterResponse.bind(this)
         ExpressRouter.ErrorHandler = this.expressRouterError.bind(this)
-        server.all('*', (req, resp) => {
-            if (req.session.user || req.session.system) return this.expressRouterError(new AppLogicError(`Permission denied!`, 403), req, resp);
-            return this.expressRouterError(new AppLogicError(`Cannot ${req.method} ${req.url}! API not found`, 404), req, resp)
-        });
+        // server.all('*', (req, resp) => {
+        //     if (req.session.user || req.session.system) return this.expressRouterError(new AppLogicError(`Permission denied!`, 403), req, resp);
+        //     return this.expressRouterError(new AppLogicError(`Cannot ${req.method} ${req.url}! API not found`, 404), req, resp)
+        // });
     }
 
     public static async main(): Promise<number> {
