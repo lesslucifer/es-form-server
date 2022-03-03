@@ -31,6 +31,27 @@ export class LakeData extends Model<LakeData> {
     tpar5: string
 
     @Column
+    tpar6: string
+
+    @Column
+    tpar7: string
+
+    @Column
+    tpar8: string
+
+    @Column
+    tpar9: string
+
+    @Column
+    ltpar1: string
+
+    @Column
+    ltpar2: string
+
+    @Column
+    ltpar3: string
+
+    @Column
     ipar1: number
 
     @Column
