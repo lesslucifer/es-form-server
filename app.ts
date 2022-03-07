@@ -10,12 +10,16 @@ import terminate from './serv/terminate';
 import createSesssionObject from './serv/sess';
 import _ from 'lodash';
 import * as path from 'path'
+import swaggerUi = require('swagger-ui-express');
+import Swagger from './swagger.document';
+import { initGQL } from './models/gql';
 
 export class Program {
     static server: express.Express;
 
     public static async setup() {
         await CONN.configureConnections(ENV);
+        await initGQL()
 
         // AuthServ.MODEL = UserServ
 
@@ -25,6 +29,7 @@ export class Program {
         server.use(createSesssionObject());
         server.all('*', cors());
 
+        server.use('/api-docs', swaggerUi.serve, swaggerUi.setup(await Swagger.buildDocument()))
         server.use('/forms', express.static(path.resolve(process.cwd(), 'forms')))
 
         // APIInfo.Logging = (winston.npm.levels[ENV.LOG_LEVEL] || 0) > 2 // greater than info level

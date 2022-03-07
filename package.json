@@ -1,6 +1,6 @@
 {
   "name": "es-form-server",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "ES Form server",
   "main": "dist/app.js",
   "scripts": {
@@ -47,6 +47,7 @@
     "sha1": "^1.1.1",
     "shortid": "^2.2.16",
     "sinon": "^7.4.1",
+    "swagger-ui-express": "^4.3.0",
     "typescript": "^4.5.5",
     "typescript-retry-decorator": "^1.5.1",
     "uuid": "^8.3.0",

@@ -4,8 +4,17 @@ import hera from "./utils/hera";
 import _ from "lodash";
 import HC from "./glob/hc";
 
-export class Program {
+export class Swagger {
     public static async main(): Promise<number> {
+        const doc = await this.buildDocument()
+        // console.log(JSON.stringify(doc))
+        await fs.writeFile(`dist/${doc.info.title}.${doc.info.version}.openapi.json`, JSON.stringify(doc))
+        console.log('DONE')
+
+        return 0;
+    }
+
+    public static async buildDocument() {
         const doc = new EROpenAPIDocument()
         doc.components = EROpenAPIDocument.COMPONENTS
         doc.info.title = HC.APP_NAME
@@ -34,17 +43,13 @@ export class Program {
             doc.addRouter(r.er, undefined, r.path)
             // console.log(`Imported file ${r.file}`)
         })
-
-        // console.log(JSON.stringify(doc))
-        await fs.writeFile(`dist/${doc.info.title}.${doc.info.version}.openapi.json`, JSON.stringify(doc))
-        console.log('DONE')
-
-        return 0;
-    }
+        
+        return doc
+    } 
 }
 
 if (require.main == module) { // this is main file
-    Program.main();
+    Swagger.main();
 }
 
-export default Program;
+export default Swagger;
