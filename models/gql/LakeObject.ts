@@ -2,6 +2,7 @@ import { GQLModel, GQLObject, GQLField, GQLResolver, GQLU, GQLQuery, GQLMapper, 
 import _ from 'lodash';
 import PaginationHelper from '../../utils/pagination';
 import LakeData from '../LakeData';
+import LakeObject from '../LakeObject';
 
 @GQLObject('data')
 export class GQLLakeObject extends GQLModel<LakeData, GQLLakeObject> {
@@ -84,12 +85,12 @@ export class GQLLakeObject extends GQLModel<LakeData, GQLLakeObject> {
         const q = await this.getRootQuery(query);
         const options = PaginationHelper.getOptions(query);
 
-        return await LakeData.findAll({ where: q, attributes: <string[]> query.QueryFields, ...options });
+        return await LakeObject.findAll({ where: q, attributes: <string[]> query.QueryFields, ...options });
     }
 
     @GQLMetaResolver({ field: 'total', matches: GQLU.byFields([], GQLLakeObject.RootOpionalFilters) })
     static async metaResolveTotal(query: GQLQuery) {
         const q = await this.getRootQuery(query);
-        return await LakeData.count({ where: q });
+        return await LakeObject.count({ where: q });
     }
 }
