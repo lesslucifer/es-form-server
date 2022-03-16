@@ -39,10 +39,10 @@ class LakeRouter extends ExpressRouter {
 
         if (!_.get(body, 'id')) {
             _.set(body, 'id', shortid.generate())
-            _.set(body, 'created_at', now.unix())
+            _.set(body, 'created_at', now.valueOf())
         }
 
-        _.set(body, 'updated_at', now.unix())
+        _.set(body, 'updated_at', now.valueOf())
         const res = await LakeObject.upsert(body, {
             returning: true
         })
@@ -92,10 +92,10 @@ class LakeRouter extends ExpressRouter {
 
         if (!_.get(body, 'id')) {
             _.set(body, 'id', shortid.generate())
-            _.set(body, 'created_at', now.unix())
+            _.set(body, 'created_at', now.valueOf())
         }
 
-        _.set(body, 'updated_at', now.unix())
+        _.set(body, 'updated_at', now.valueOf())
         const res = await LakeData.upsert(body, {
             returning: true
         })

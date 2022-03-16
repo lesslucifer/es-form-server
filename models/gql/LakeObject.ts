@@ -1,5 +1,6 @@
 import { GQLModel, GQLObject, GQLField, GQLResolver, GQLU, GQLQuery, GQLMapper, GQLMetaResolver, GQLFieldRevMapping } from 'gql-ts';
 import _ from 'lodash';
+import hera from '../../utils/hera';
 import PaginationHelper from '../../utils/pagination';
 import LakeData from '../LakeData';
 import LakeObject from '../LakeObject';
@@ -55,9 +56,13 @@ export class GQLLakeObject extends GQLModel<LakeData, GQLLakeObject> {
         const type = _.uniq(query.filter.get('type').batch<string>());
         const code = _.uniq(query.filter.get('code').batch<string>());
         const tpar1 = _.uniq(query.filter.get('tpar1').batch<string>());
-        const ipar1 = _.uniq(query.filter.get('ipar1').batch<number>());
-        const bipar = _.uniq(query.filter.get('bipar').batch<number>());
-        const tspar = _.uniq(query.filter.get('tspar').batch<number>());
+        const tpar2 = _.uniq(query.filter.get('tpar2').batch<string>());
+        const tpar3 = _.uniq(query.filter.get('tpar3').batch<string>());
+        const ipar1 = _.uniq(query.filter.get('ipar1').batch<number>().map(v => hera.parseInt(v)));
+        const ipar2 = _.uniq(query.filter.get('ipar2').batch<number>().map(v => hera.parseInt(v)));
+        const ipar3 = _.uniq(query.filter.get('ipar3').batch<number>().map(v => hera.parseInt(v)));
+        const bipar = _.uniq(query.filter.get('bipar').batch<number>().map(v => hera.parseInt(v)));
+        const tspar = _.uniq(query.filter.get('tspar').batch<number>().map(v => hera.parseInt(v)));
         const created_at = _.uniq(query.filter.get('created_at').batch<number>());
         const updated_at = _.uniq(query.filter.get('updated_at').batch<number>());
 
@@ -66,7 +71,11 @@ export class GQLLakeObject extends GQLModel<LakeData, GQLLakeObject> {
             type,
             code,
             tpar1,
+            tpar2,
+            tpar3,
             ipar1,
+            ipar2,
+            ipar3,
             bipar,
             tspar,
             created_at,
@@ -77,7 +86,7 @@ export class GQLLakeObject extends GQLModel<LakeData, GQLLakeObject> {
     }
 
     static get RootOpionalFilters() {
-        return ['id', 'type', 'code', 'tpar1', 'ipar1', 'bipar', 'tspar', 'created_at', 'updated_at'];
+        return ['id', 'type', 'code', 'tpar1', 'tpar2', 'tpar3', 'ipar1', 'ipar2', 'ipar3', 'bipar', 'tspar', 'created_at', 'updated_at'];
     }
 
     @GQLResolver({ matches: GQLU.byFields([], GQLLakeObject.RootOpionalFilters) })
