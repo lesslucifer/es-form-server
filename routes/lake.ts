@@ -31,7 +31,7 @@ class LakeRouter extends ExpressRouter {
         '@ipar2': 'integer',
         '@ipar3': 'integer',
         '@bipar': 'integer',
-        '@tspar': 'integer'
+        '@tspar': 'string'
     })
     @POST({path: "/objects"})
     async addObject(@Body() body: any) {
@@ -82,9 +82,9 @@ class LakeRouter extends ExpressRouter {
         '@ipar5': 'integer',
         '@bipar1': 'integer',
         '@bipar2': 'integer',
-        '@tspar1': 'integer',
-        '@tspar2': 'integer',
-        '@tspar3': 'integer'
+        '@tspar1': 'string',
+        '@tspar2': 'string',
+        '@tspar3': 'string'
     })
     @POST({path: "/data"})
     async addData(@Body() body: any) {
