@@ -1,6 +1,6 @@
 import { Table, Column, Model, PrimaryKey, CreatedAt, UpdatedAt } from 'sequelize-typescript';
 
-@Table({ tableName: 'object' })
+@Table({ tableName: 'object', timestamps: false })
 export class LakeObject extends Model<LakeObject> {
     @PrimaryKey
     @Column
@@ -39,10 +39,10 @@ export class LakeObject extends Model<LakeObject> {
     @Column
     tspar: number
 
-    @CreatedAt
+    @Column
     created_at: number
 
-    @UpdatedAt
+    @Column
     updated_at: number
 }
 
